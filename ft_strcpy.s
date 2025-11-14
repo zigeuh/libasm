@@ -12,3 +12,5 @@ ft_strcpy:
 	jnz .loop
 	pop rax
 	ret
+.error:
+	ret
