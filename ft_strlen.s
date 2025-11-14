@@ -2,9 +2,9 @@ section .text
 global ft_strlen
 ft_strlen:
 	xor rax, rax
-	jmp .loop
 .loop:
-	cmp byte [rdi + rax], 0
+	mov cl, byte [rdi + rax]
+	test cl, cl
 	je .done
 	inc rax
 	jmp .loop
