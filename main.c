@@ -4,17 +4,21 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
 
 size_t ft_strlen(const char*);
 char *ft_strcpy(char*, const char*);
 int ft_strcmp(const char *s1, const char *s2);
 ssize_t ft_write(int fd, const void *buf, size_t count);
+ssize_t ft_read(int fd, void *buf, size_t count);
 
 int main() {
 
 	char dest[100] = "";
 
-	// ft_strlen
+	// ----------------------- ft_strlen -----------------------
 	printf("\n-- ft_strlen --\n\n");
 
 	printf("%ld\n", ft_strlen("Hello World"));
@@ -25,7 +29,7 @@ int main() {
 	// printf("%ld\n", ft_strlen(NULL));
 	// printf("%ld\n", strlen(NULL));
 
-	// ft_strcpy
+	// ----------------------- ft_strcpy -----------------------
 	printf("\n-- ft_strcpy --\n\n");
 
 
@@ -46,7 +50,7 @@ int main() {
 	// printf("Return of ft_strcpy: %s\n", ft_strcpy(NULL, "Hello Zorld"));
 	// printf("%s\n", dest);
 
-	// ft_strcmp
+	// ----------------------- ft_strcmp -----------------------
 	printf("\n-- ft_strcmp --\n\n");
 
 	printf("Salut | Salut: %d\n", strcmp("Salut", "Salut"));
@@ -69,7 +73,7 @@ int main() {
 	// printf("a | NULL: %d\n", strcmp("a", NULL));
 	// printf("a | NULL: %d\n", ft_strcmp("a", NULL));
 
-	// ft_write
+	// ----------------------- ft_write -----------------------0
 	printf("\n-- ft_write --\n\n");
 
 	printf("write bytes: %ld\n", write(1, "Yes\n", 4));
@@ -80,4 +84,35 @@ int main() {
 
 	// printf("write bytes: %ld\n", write(1, "No\n", 5)); Not compiling with flags
 	printf("ft_write bytes: %ld\n", ft_write(1, "No\n", 5));
+
+
+	// ----------------------- ft_write -----------------------
+	int fd = open("Makefile", O_RDONLY);
+	char *bytes_read = malloc(sizeof(char) * 5);
+
+	read(fd, bytes_read, 4);
+	bytes_read[4] = 0;
+	printf("read: %s\n", bytes_read);
+
+	close(fd);
+	fd = open("Makefile", O_RDONLY);
+
+	ft_read(fd, bytes_read, 4);
+	printf("read: %s\n", bytes_read);
+	close(fd);
+	free(bytes_read);
+
+	fd = open("Makefile", O_RDONLY);
+	bytes_read = malloc(sizeof(char) * 15);	
+	read(fd, bytes_read, 14);
+	bytes_read[14] = 0;
+	printf("read: %s\n", bytes_read);
+
+	close(fd);
+	fd = open("Makefile", O_RDONLY);
+
+	ft_read(fd, bytes_read, 14);
+	printf("read: %s\n", bytes_read);
+	close(fd);
+	free(bytes_read);
 }
