@@ -9,7 +9,7 @@ ft_write:
 	jl .error
 	ret
 
-.error
+.error:
 	neg rax
 	mov rdi, rax
 	call __errno_location wrt ..plt
