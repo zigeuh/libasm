@@ -209,6 +209,15 @@ int main() {
 	free(og_dup);
 	free(ft_dup);
 
+
+
+	// Start with    bash -c "ulimit -v 10970 ; ./a.out"
+	// errno = 0;
+	// char *p = malloc(8 * 1024 * 1024);
+	// strdup(p);
+	// printf("Error: %s\n", strerror(errno));
+	// errno = 0;
+
 	// Crashes
 
 	////--
