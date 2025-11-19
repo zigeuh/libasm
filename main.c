@@ -6,6 +6,7 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+#include <errno.h>
 
 
 size_t ft_strlen(const char*);
@@ -101,15 +102,22 @@ int main() {
 	//--
 	printf("--\n");
 
-	printf("write bytes: %ld\n", write(1, NULL, 4)); // Not compiling with flags
 	printf("ft_write bytes: %ld\n", ft_write(1, NULL, 4));
+	printf("Error: %s\n", strerror(errno));
+	errno = 0;
+	printf("write bytes: %ld\n", write(1, NULL, 4)); // Not compiling with flags
+	printf("Error: %s\n", strerror(errno));
+	errno = 0;
 
 	//--
 	printf("--\n");
 
-	printf("write bytes: %ld\n", write(1, "No\n", 5)); // Not compiling with flags
 	printf("ft_write bytes: %ld\n", ft_write(1, "No\n", 5));
-
+	printf("Error: %s\n", strerror(errno));
+	errno = 0;
+	printf("write bytes: %ld\n", write(1, "No\n", 5)); // Not compiling with flags
+	printf("Error: %s\n", strerror(errno));
+	errno = 0;
 
 	// ----------------------- ft_read -----------------------
 	printf("\n----------------------- ft_read -----------------------\n\n");
