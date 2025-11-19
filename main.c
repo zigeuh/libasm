@@ -154,6 +154,27 @@ int main() {
 	close(fd);
 	free(bytes_read);
 
+	//--
+	printf("--\n");
+
+	bytes_read = calloc(sizeof(char), 15);	
+	read(-1, bytes_read, 14);
+	printf("Error: %s\n", strerror(errno));
+	errno = 0;
+	bytes_read[14] = 0;
+	printf("read: %s\n", bytes_read);
+	free(bytes_read);
+	
+	char *test = calloc(sizeof(char), 15);
+
+	close(fd);
+	ft_read(-1, test, 14);
+	printf("Error: %s\n", strerror(errno));
+	errno = 0;	
+	printf("read: %s\n", test);
+	close(fd);
+	free(test);
+
 	// ----------------------- ft_strdup -----------------------
 	printf("\n----------------------- ft_strdup -----------------------\n\n");
 
