@@ -3,7 +3,7 @@ section .text
 
 ft_atoi_base:
     xor eax, eax
-        mov cx, 1
+    mov cx, 1
     mov bl, byte [rdi]
     cmp bl, '-'
     jne .check_plus
@@ -18,13 +18,13 @@ ft_atoi_base:
 .loop:
     mov bl, byte [rdi]
     cmp bl, 0
-    je .done
+    je .check_neg
     cmp bl, '9'
-    jl .0_9
+    jle .0_9
     cmp bl, 'a'
-    jg .a_z
+    jge .a_z
     cmp bl, 'A'
-    jg .A_Z
+    jge .A_Z
     jmp .error
 
 .0_9:
@@ -47,8 +47,16 @@ ft_atoi_base:
     add bl, 10
 
 .valid_char:
-    inc rdi
-    jmp .loop
+    imul eax, 2
+    movzx edx, bl
+    add  eax, edx
+    inc  rdi
+    jmp  .loop
+
+.check_neg:
+    cmp cx, -1
+    jne .done
+    neg eax
 
 .done:
     ret
