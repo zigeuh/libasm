@@ -9,7 +9,7 @@ ft_atoi_base:
 .check_base_chars:
     mov bl, byte [r8]
     cmp bl, 0
-    je .check_minus
+    je .base_len
     cmp bl, '0'
     jl .error
     cmp bl, '9'
@@ -39,6 +39,22 @@ ft_atoi_base:
 .dupes_ok:
     inc r8
     jmp .check_base_chars
+
+.base_len:
+    xor r11d, r11d
+    mov r8, rsi
+
+.base_len_loop:
+    mov bl, byte [r8]
+    cmp bl, 0
+    je .check_base_len
+    inc r11d
+    inc r8
+    jmp .base_len_loop
+
+.check_base_len:
+    cmp r11d, 1
+    jle .error
 
 .check_minus:
     cmp byte [rdi], '-'
@@ -106,7 +122,7 @@ ft_atoi_base:
     add bl, 10
 
 .valid_char:
-    imul eax, 2
+    imul eax, r11d
     movzx edx, bl
     add  eax, edx
     inc  rdi
