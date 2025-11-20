@@ -12,20 +12,32 @@ ft_atoi_base:
     cmp bl, '0'
     jl .error
     cmp bl, '9'
-    jle .ok
+    jle .char_ok
     cmp bl, 'A'
     jl .error
     cmp bl, 'Z'
-    jle .ok
+    jle .char_ok
     cmp bl, 'a'
     jl .error
     cmp bl, 'z'
-    jle .ok
+    jle .char_ok
     jl .error
 
-.ok:
+.char_ok:
+    mov rdx, rsi
+
+.check_base_dupes:
+    inc rdx
+    mov cl, byte [rdx]
+    cmp cl, 0
+    je .dupes_ok
+    cmp cl, bl
+    je .error
+    jmp .check_base_dupes
+
+.dupes_ok:
     inc rsi
-    jmp .check_base
+    jmp .check_base_chars
 
 .check_minus:
     mov bl, byte [rdi]
