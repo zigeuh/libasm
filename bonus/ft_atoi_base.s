@@ -1,12 +1,17 @@
+section .data:
+    msg db "Salut"
+
 section .text
     global ft_atoi_base
+    extern printf
 
 ft_atoi_base:
     xor eax, eax
     mov cx, 1
+    mov r8, rsi
    
 .check_base_chars:
-    mov bl, byte [rsi]
+    mov bl, byte [r8]
     cmp bl, 0
     je .check_minus
     cmp bl, '0'
@@ -24,11 +29,11 @@ ft_atoi_base:
     jl .error
 
 .char_ok:
-    mov rdx, rsi
+    mov r9, r8  
 
 .check_base_dupes:
-    inc rdx
-    mov cl, byte [rdx]
+    inc r9
+    mov cl, byte [r9]
     cmp cl, 0
     je .dupes_ok
     cmp cl, bl
@@ -36,20 +41,42 @@ ft_atoi_base:
     jmp .check_base_dupes
 
 .dupes_ok:
-    inc rsi
+    inc r8
     jmp .check_base_chars
 
 .check_minus:
-    mov bl, byte [rdi]
-    cmp bl, '-'
+    cmp byte [rdi], '-'
     jne .check_plus
     mov cx, -1
     inc rdi
+    jmp .loop
 
 .check_plus:
     cmp byte [rdi], '+'
     jne .loop
     inc rdi
+
+.respect_base:
+    mov r8, rdi
+
+.respect_base_outer:
+    mov r9, rsi
+    mov bl, byte [r8]
+    cmp bl, 0
+    je .loop
+
+.respect_base_inner:
+    mov cl, byte [r9]
+    cmp cl, 0
+    je .error
+    cmp bl, cl
+    je .in_base
+    inc r9
+    jmp .respect_base_inner
+
+.in_base:
+    inc r8
+    jmp .respect_base_outer
 
 .loop:
     mov bl, byte [rdi]
