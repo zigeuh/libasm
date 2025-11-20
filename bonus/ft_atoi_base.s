@@ -4,6 +4,30 @@ section .text
 ft_atoi_base:
     xor eax, eax
     mov cx, 1
+   
+.check_base_chars:
+    mov bl, byte [rsi]
+    cmp bl, 0
+    je .check_minus
+    cmp bl, '0'
+    jl .error
+    cmp bl, '9'
+    jle .ok
+    cmp bl, 'A'
+    jl .error
+    cmp bl, 'Z'
+    jle .ok
+    cmp bl, 'a'
+    jl .error
+    cmp bl, 'z'
+    jle .ok
+    jl .error
+
+.ok:
+    inc rsi
+    jmp .check_base
+
+.check_minus:
     mov bl, byte [rdi]
     cmp bl, '-'
     jne .check_plus
