@@ -33,10 +33,10 @@ ft_atoi_base:
 
 .check_base_dupes:
     inc r9
-    mov cl, byte [r9]
-    cmp cl, 0
+    mov r10b, byte [r9]
+    cmp r10b, 0
     je .dupes_ok
-    cmp cl, bl
+    cmp r10b, bl
     je .error
     jmp .check_base_dupes
 
@@ -49,11 +49,11 @@ ft_atoi_base:
     jne .check_plus
     mov cx, -1
     inc rdi
-    jmp .loop
+    jmp .respect_base
 
 .check_plus:
     cmp byte [rdi], '+'
-    jne .loop
+    jne .respect_base
     inc rdi
 
 .respect_base:
@@ -66,10 +66,10 @@ ft_atoi_base:
     je .loop
 
 .respect_base_inner:
-    mov cl, byte [r9]
-    cmp cl, 0
+    mov r10b, byte [r9]
+    cmp r10b, 0
     je .error
-    cmp bl, cl
+    cmp bl, r10b
     je .in_base
     inc r9
     jmp .respect_base_inner
