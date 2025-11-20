@@ -1,9 +1,5 @@
-section .data:
-    msg db "Salut"
-
 section .text
     global ft_atoi_base
-    extern printf
 
 ft_atoi_base:
     xor eax, eax
