@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 size_t _ft_strlen(const char*);
 char *_ft_strcpy(char*, const char*);
@@ -16,5 +18,6 @@ char *_ft_strdup(const char *s);
 void ft_strlen_tests();
 void ft_strcpy_tests();
 void ft_strcmp_tests();
+void ft_write_tests();
 
 #endif

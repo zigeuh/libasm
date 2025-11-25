@@ -2,11 +2,11 @@
 
 void ft_strlen_tests() {
 
+    char *str = "Hello";
+
     printf("##############################################\n");
     printf("#                   strlen                   #\n");
     printf("##############################################\n");
-
-    char *str = "Hello";
 
     printf("\n1. Normal string:\n");
 

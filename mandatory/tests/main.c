@@ -16,6 +16,7 @@ int main() {
 	ft_strcpy_tests();
 	ft_strcmp_tests();
 
+	ft_write_tests();
 	// ----------------------- ft_write -----------------------0
 	printf("\n----------------------- ft_write -----------------------\n\n");
 

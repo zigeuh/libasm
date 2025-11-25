@@ -2,12 +2,12 @@
 
 void ft_strcmp_tests() {
 
+    char *s1 = "Hello";
+    char *s2 = "Yes";
+
     printf("##############################################\n");
     printf("#                   strcmp                   #\n");
     printf("##############################################\n");
-
-    char *s1 = "Hello";
-    char *s2 = "Yes";
 
     printf("\n1. Equals:\n");
 
