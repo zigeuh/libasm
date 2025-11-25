@@ -26,61 +26,72 @@ B_TEST_OBJ = $(patsubst $(B_DIR)/tests/%.c,$(B_BUILD_DIR)/%.o,$(B_TEST_SRC))
 M_HEADER_FLAG = -I$(M_DIR)/tests
 B_HEADER_FLAG = -I$(B_DIR)/tests
 
-M_TARGET = $(M_DIR)/a.out
 M_LIBASM = $(M_DIR)/libasm.a
-
-B_TARGET = $(B_DIR)/a.out
 B_LIBASM = $(B_DIR)/libasm_bonus.a
+
+M_TARGET = $(M_DIR)/a.out
+B_TARGET = $(B_DIR)/a.out
 
 all: mandatory bonus
 
 ##############
-# MANDATORY
+# BUILD DIRS
 ##############
 
 $(M_BUILD_DIR):
 	mkdir -p $(M_BUILD_DIR)
 
+$(B_BUILD_DIR):
+	mkdir -p $(B_BUILD_DIR)
+
+##############
+# OBJECTS
+##############
+
 $(M_BUILD_DIR)/%.o: $(M_DIR)/%.s | $(M_BUILD_DIR)
+	$(ASM) $(ASM_FLAGS) $< -o $@
+
+$(B_BUILD_DIR)/%.o: $(B_DIR)/%.s | $(B_BUILD_DIR)
 	$(ASM) $(ASM_FLAGS) $< -o $@
 
 $(M_BUILD_DIR)/%.o: $(M_DIR)/tests/%.c | $(M_BUILD_DIR)
 	$(CC) $(CFLAGS) $(M_HEADER_FLAG) -c $< -o $@
 
-$(M_LIBASM): $(M_OBJ_S)
-	$(AR) $(ARFLAGS) $(M_LIBASM) $(M_OBJ_S)
-
-$(M_TARGET): $(M_LIBASM) $(M_TEST_OBJ)
-	$(CC) $(CFLAGS) $(M_HEADER_FLAG) $(M_TEST_OBJ) $(M_LIBASM) -o $(M_TARGET)
-
-mandatory: $(M_TARGET)
-m: mandatory
-
-##############
-# BONUS
-##############
-
-$(B_BUILD_DIR):
-	mkdir -p $(B_BUILD_DIR)
-
-$(B_BUILD_DIR)/%.o: $(B_DIR)/%.s | $(B_BUILD_DIR)
-	$(ASM) $(ASM_FLAGS) $< -o $@
-
 $(B_BUILD_DIR)/%.o: $(B_DIR)/tests/%.c | $(B_BUILD_DIR)
 	$(CC) $(CFLAGS) $(B_HEADER_FLAG) -c $< -o $@
+
+##############
+# LIBRARIES
+##############
+
+$(M_LIBASM): $(M_OBJ_S)
+	$(AR) $(ARFLAGS) $(M_LIBASM) $(M_OBJ_S)
 
 $(B_LIBASM): $(B_OBJ_S)
 	$(AR) $(ARFLAGS) $(B_LIBASM) $(B_OBJ_S)
 
+##############
+# EXECUTABLES
+##############
+
+$(M_TARGET): $(M_LIBASM) $(M_TEST_OBJ)
+	$(CC) $(CFLAGS) $(M_HEADER_FLAG) $(M_TEST_OBJ) $(M_LIBASM) -o $(M_TARGET)
+
 $(B_TARGET): $(B_LIBASM) $(B_TEST_OBJ)
 	$(CC) $(CFLAGS) $(B_HEADER_FLAG) $(B_TEST_OBJ) $(B_LIBASM) -o $(B_TARGET)
 
-bonus: $(B_TARGET)
-b: bonus
+##############
+# RULES
+##############
 
-##############
-# COMMANDS
-##############
+build_exec: $(M_TARGET)
+build_exec_bonus: $(B_TARGET)
+
+mandatory: $(M_LIBASM)
+bonus: $(B_LIBASM)
+
+m: mandatory
+b: bonus
 
 exec: $(M_TARGET)
 	./$(M_TARGET)
@@ -91,10 +102,10 @@ exec_bonus: $(B_TARGET)
 valgrind: $(M_TARGET)
 	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --track-fds=all ./$(M_TARGET)
 
-v: valgrind
+vm: valgrind
 
 valgrind_bonus: $(B_TARGET)
-	valgrind --leak-check=full --track-origins=yes ./$(B_TARGET)
+	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --track-fds=all ./$(B_TARGET)
 
 vb: valgrind_bonus
 
@@ -106,4 +117,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re mandatory bonus exec exec_bonus m b valgrind valgrind_bonus v vb
+.PHONY: all clean fclean re mandatory bonus exec exec_bonus m b valgrind valgrind_bonus vm vb build_exec
