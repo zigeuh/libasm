@@ -8,31 +8,15 @@
 #include <fcntl.h>
 #include <errno.h>
 
-
-size_t _ft_strlen(const char*);
-char *_ft_strcpy(char*, const char*);
-int _ft_strcmp(const char *s1, const char *s2);
-ssize_t _ft_write(int fd, const void *buf, size_t count);
-ssize_t _ft_read(int fd, void *buf, size_t count);
-char *_ft_strdup(const char *s);
+#include "libasm.h"
 
 int main() {
 
 	char dest[100] = "";
 
 	// ----------------------- ft_strlen -----------------------
-	printf("\n----------------------- ft_strlen -----------------------\n\n");
 
-	printf("%ld\n", _ft_strlen("Hello World"));
-	printf("%ld\n", strlen("Hello World"));
-
-	// Crashes
-
-	////--
-	//printf("--\n");
-
-	// printf("%ld\n", ft_strlen(NULL));
-	// printf("%ld\n", strlen(NULL));
+	ft_strlen_tests();
 
 	// ----------------------- ft_strcpy -----------------------
 	printf("\n----------------------- ft_strcpy -----------------------\n\n");
@@ -105,8 +89,8 @@ int main() {
 	printf("ft_write bytes: %ld\n", _ft_write(1, NULL, 4));
 	printf("Error: %s\n", strerror(errno));
 	errno = 0;
-	printf("write bytes: %ld\n", write(1, NULL, 4)); // Not compiling with flags
-	printf("Error: %s\n", strerror(errno));
+	// printf("write bytes: %ld\n", write(1, NULL, 4)); // Not compiling with flags
+	// printf("Error: %s\n", strerror(errno));
 	errno = 0;
 
 	//--
@@ -115,8 +99,8 @@ int main() {
 	printf("ft_write bytes: %ld\n", _ft_write(1, "No\n", 5));
 	printf("Error: %s\n", strerror(errno));
 	errno = 0;
-	printf("write bytes: %ld\n", write(1, "No\n", 5)); // Not compiling with flags
-	printf("Error: %s\n", strerror(errno));
+	// printf("write bytes: %ld\n", write(1, "No\n", 5)); // Not compiling with flags
+	// printf("Error: %s\n", strerror(errno));
 	errno = 0;
 
 	// ----------------------- ft_read -----------------------

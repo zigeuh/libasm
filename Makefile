@@ -1,7 +1,7 @@
 ASM = nasm
 ASM_FLAGS = -felf64
 CC = gcc
-CFLAGS = -g3
+CFLAGS = -Wall -Werror -Wextra
 AR = ar
 ARFLAGS = rcs
 
@@ -17,11 +17,18 @@ B_SRC_S = $(wildcard $(B_DIR)/*.s)
 M_OBJ_S = $(patsubst $(M_DIR)/%.s,$(M_BUILD_DIR)/%.o,$(M_SRC_S))
 B_OBJ_S = $(patsubst $(B_DIR)/%.s,$(B_BUILD_DIR)/%.o,$(B_SRC_S))
 
-M_MAIN = $(M_DIR)/main.c
+M_TEST_SRC = $(wildcard $(M_DIR)/tests/*.c)
+B_TEST_SRC = $(wildcard $(B_DIR)/tests/*.c)
+
+M_TEST_OBJ = $(patsubst $(M_DIR)/tests/%.c,$(M_BUILD_DIR)/%.o,$(M_TEST_SRC))
+B_TEST_OBJ = $(patsubst $(B_DIR)/tests/%.c,$(B_BUILD_DIR)/%.o,$(B_TEST_SRC))
+
+M_HEADER_FLAG = -I$(M_DIR)/tests
+B_HEADER_FLAG = -I$(B_DIR)/tests
+
 M_TARGET = $(M_DIR)/a.out
 M_LIBASM = $(M_DIR)/libasm.a
 
-B_MAIN = $(B_DIR)/main.c
 B_TARGET = $(B_DIR)/a.out
 B_LIBASM = $(B_DIR)/libasm_bonus.a
 
@@ -37,11 +44,14 @@ $(M_BUILD_DIR):
 $(M_BUILD_DIR)/%.o: $(M_DIR)/%.s | $(M_BUILD_DIR)
 	$(ASM) $(ASM_FLAGS) $< -o $@
 
+$(M_BUILD_DIR)/%.o: $(M_DIR)/tests/%.c | $(M_BUILD_DIR)
+	$(CC) $(CFLAGS) $(M_HEADER_FLAG) -c $< -o $@
+
 $(M_LIBASM): $(M_OBJ_S)
 	$(AR) $(ARFLAGS) $(M_LIBASM) $(M_OBJ_S)
 
-$(M_TARGET): $(M_MAIN) $(M_LIBASM)
-	$(CC) $(CFLAGS) $(M_MAIN) $(M_LIBASM) -o $(M_TARGET)
+$(M_TARGET): $(M_LIBASM) $(M_TEST_OBJ)
+	$(CC) $(CFLAGS) $(M_HEADER_FLAG) $(M_TEST_OBJ) $(M_LIBASM) -o $(M_TARGET)
 
 mandatory: $(M_TARGET)
 m: mandatory
@@ -56,11 +66,14 @@ $(B_BUILD_DIR):
 $(B_BUILD_DIR)/%.o: $(B_DIR)/%.s | $(B_BUILD_DIR)
 	$(ASM) $(ASM_FLAGS) $< -o $@
 
+$(B_BUILD_DIR)/%.o: $(B_DIR)/tests/%.c | $(B_BUILD_DIR)
+	$(CC) $(CFLAGS) $(B_HEADER_FLAG) -c $< -o $@
+
 $(B_LIBASM): $(B_OBJ_S)
 	$(AR) $(ARFLAGS) $(B_LIBASM) $(B_OBJ_S)
 
-$(B_TARGET): $(B_MAIN) $(B_LIBASM)
-	$(CC) $(CFLAGS) $(B_MAIN) $(B_LIBASM) -o $(B_TARGET)
+$(B_TARGET): $(B_LIBASM) $(B_TEST_OBJ)
+	$(CC) $(CFLAGS) $(B_HEADER_FLAG) $(B_TEST_OBJ) $(B_LIBASM) -o $(B_TARGET)
 
 bonus: $(B_TARGET)
 b: bonus
