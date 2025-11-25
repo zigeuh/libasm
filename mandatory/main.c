@@ -9,12 +9,12 @@
 #include <errno.h>
 
 
-size_t ft_strlen(const char*);
-char *ft_strcpy(char*, const char*);
-int ft_strcmp(const char *s1, const char *s2);
-ssize_t ft_write(int fd, const void *buf, size_t count);
-ssize_t ft_read(int fd, void *buf, size_t count);
-char *ft_strdup(const char *s);
+size_t _ft_strlen(const char*);
+char *_ft_strcpy(char*, const char*);
+int _ft_strcmp(const char *s1, const char *s2);
+ssize_t _ft_write(int fd, const void *buf, size_t count);
+ssize_t _ft_read(int fd, void *buf, size_t count);
+char *_ft_strdup(const char *s);
 
 int main() {
 
@@ -23,7 +23,7 @@ int main() {
 	// ----------------------- ft_strlen -----------------------
 	printf("\n----------------------- ft_strlen -----------------------\n\n");
 
-	printf("%ld\n", ft_strlen("Hello World"));
+	printf("%ld\n", _ft_strlen("Hello World"));
 	printf("%ld\n", strlen("Hello World"));
 
 	// Crashes
@@ -40,7 +40,7 @@ int main() {
 
 	printf("Return of strcpy: %s\n", strcpy(dest, "Hello Zorld"));
 	printf("%s\n", dest);
-	printf("Return of ft_strcpy: %s\n", ft_strcpy(dest, "Hello Zorld"));
+	printf("Return of ft_strcpy: %s\n", _ft_strcpy(dest, "Hello Zorld"));
 	printf("%s\n", dest);
 
 	// Crashes
@@ -65,25 +65,25 @@ int main() {
 	printf("\n----------------------- ft_strcmp -----------------------\n\n");
 
 	printf("Salut | Salut: %d\n", strcmp("Salut", "Salut"));
-	printf("Salut | Salut: %d\n", ft_strcmp("Salut", "Salut"));
+	printf("Salut | Salut: %d\n", _ft_strcmp("Salut", "Salut"));
 
 	//--
 	printf("--\n");
 
 	printf("Coucou | Couco: %d\n", strcmp("Coucou", "Couco"));
-	printf("Coucou | Couco: %d\n", ft_strcmp("Coucou", "Couco"));
+	printf("Coucou | Couco: %d\n", _ft_strcmp("Coucou", "Couco"));
 
 	//--
 	printf("--\n");
 
 	printf("A | a: %d\n", strcmp("A", "a"));
-	printf("A | a: %d\n", ft_strcmp("A", "a"));
+	printf("A | a: %d\n", _ft_strcmp("A", "a"));
 
 	//--
 	printf("--\n");
 
 	printf("a | A: %d\n", strcmp("a", "A"));
-	printf("a | A: %d\n", ft_strcmp("a", "A"));
+	printf("a | A: %d\n", _ft_strcmp("a", "A"));
 
 	// Crashes
 
@@ -97,12 +97,12 @@ int main() {
 	printf("\n----------------------- ft_write -----------------------\n\n");
 
 	printf("write bytes: %ld\n", write(1, "Yes\n", 4));
-	printf("ft_write bytes: %ld\n", ft_write(1, "Yes\n", 4));
+	printf("ft_write bytes: %ld\n", _ft_write(1, "Yes\n", 4));
 
 	//--
 	printf("--\n");
 
-	printf("ft_write bytes: %ld\n", ft_write(1, NULL, 4));
+	printf("ft_write bytes: %ld\n", _ft_write(1, NULL, 4));
 	printf("Error: %s\n", strerror(errno));
 	errno = 0;
 	printf("write bytes: %ld\n", write(1, NULL, 4)); // Not compiling with flags
@@ -112,7 +112,7 @@ int main() {
 	//--
 	printf("--\n");
 
-	printf("ft_write bytes: %ld\n", ft_write(1, "No\n", 5));
+	printf("ft_write bytes: %ld\n", _ft_write(1, "No\n", 5));
 	printf("Error: %s\n", strerror(errno));
 	errno = 0;
 	printf("write bytes: %ld\n", write(1, "No\n", 5)); // Not compiling with flags
@@ -132,7 +132,7 @@ int main() {
 	close(fd);
 	fd = open("Makefile", O_RDONLY);
 
-	ft_read(fd, bytes_read, 4);
+	_ft_read(fd, bytes_read, 4);
 	printf("read: %s\n", bytes_read);
 	close(fd);
 	free(bytes_read);
@@ -149,7 +149,7 @@ int main() {
 	close(fd);
 	fd = open("Makefile", O_RDONLY);
 
-	ft_read(fd, bytes_read, 14);
+	_ft_read(fd, bytes_read, 14);
 	printf("read: %s\n", bytes_read);
 	close(fd);
 	free(bytes_read);
@@ -168,7 +168,7 @@ int main() {
 	char *test = calloc(sizeof(char), 15);
 
 	close(fd);
-	ft_read(-1, test, 14);
+	_ft_read(-1, test, 14);
 	printf("Error: %s\n", strerror(errno));
 	errno = 0;	
 	printf("read: %s\n", test);
@@ -183,7 +183,7 @@ int main() {
 	printf("base: %s\n", base);
 
 	char *og_dup = strdup(base);
-	char *ft_dup = ft_strdup(base);
+	char *ft_dup = _ft_strdup(base);
 
 	printf("og_dup: %s\n", og_dup);
 	printf("ft_dup: %s\n", ft_dup);
@@ -200,7 +200,7 @@ int main() {
 	printf("base: %s\n", base);
 
 	og_dup = strdup(base);
-	ft_dup = ft_strdup(base);
+	ft_dup = _ft_strdup(base);
 
 	printf("og_dup: %s\n", og_dup);
 	printf("ft_dup: %s\n", ft_dup);

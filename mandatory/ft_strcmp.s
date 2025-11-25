@@ -1,6 +1,7 @@
 section .text
-global ft_strcmp
-ft_strcmp:
+	global _ft_strcmp
+
+_ft_strcmp:
 .loop:
 	mov al, [rdi]
 	mov bl, [rsi]

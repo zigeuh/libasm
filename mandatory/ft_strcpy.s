@@ -1,6 +1,7 @@
 section .text
-global ft_strcpy
-ft_strcpy:
+	global _ft_strcpy
+
+_ft_strcpy:
 	push rdi
 	mov rcx, rdi
 .loop:

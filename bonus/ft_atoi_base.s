@@ -1,7 +1,7 @@
 section .text
     global ft_atoi_base
 
-ft_atoi_base:
+_ft_atoi_base:
     xor eax, eax
     mov cx, 1
     mov r8, rsi
