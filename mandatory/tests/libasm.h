@@ -15,5 +15,6 @@ char *_ft_strdup(const char *s);
 
 void ft_strlen_tests();
 void ft_strcpy_tests();
+void ft_strcmp_tests();
 
 #endif

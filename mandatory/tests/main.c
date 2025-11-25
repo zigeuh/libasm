@@ -12,45 +12,9 @@
 
 int main() {
 
-	// ----------------------- ft_strlen -----------------------
-
 	ft_strlen_tests();
-
-	// ----------------------- ft_strcpy -----------------------
-
 	ft_strcpy_tests();
-
-	// ----------------------- ft_strcmp -----------------------
-	printf("\n----------------------- ft_strcmp -----------------------\n\n");
-
-	printf("Salut | Salut: %d\n", strcmp("Salut", "Salut"));
-	printf("Salut | Salut: %d\n", _ft_strcmp("Salut", "Salut"));
-
-	//--
-	printf("--\n");
-
-	printf("Coucou | Couco: %d\n", strcmp("Coucou", "Couco"));
-	printf("Coucou | Couco: %d\n", _ft_strcmp("Coucou", "Couco"));
-
-	//--
-	printf("--\n");
-
-	printf("A | a: %d\n", strcmp("A", "a"));
-	printf("A | a: %d\n", _ft_strcmp("A", "a"));
-
-	//--
-	printf("--\n");
-
-	printf("a | A: %d\n", strcmp("a", "A"));
-	printf("a | A: %d\n", _ft_strcmp("a", "A"));
-
-	// Crashes
-
-	// printf("NULL | a: %d\n", strcmp(NULL, "a"));
-	// printf("NULL | a: %d\n", ft_strcmp(NULL, "a"));
-
-	// printf("a | NULL: %d\n", strcmp("a", NULL));
-	// printf("a | NULL: %d\n", ft_strcmp("a", NULL));
+	ft_strcmp_tests();
 
 	// ----------------------- ft_write -----------------------0
 	printf("\n----------------------- ft_write -----------------------\n\n");
