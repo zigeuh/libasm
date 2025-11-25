@@ -23,4 +23,6 @@ void ft_strlen_tests() {
 
     printf("_ft_strlen: %ld\n", _ft_strlen(""));
     printf("strlen: %ld\n", strlen(""));
+
+    printf("\n");
 }

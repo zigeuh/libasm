@@ -12,38 +12,13 @@
 
 int main() {
 
-	char dest[100] = "";
-
 	// ----------------------- ft_strlen -----------------------
 
 	ft_strlen_tests();
 
 	// ----------------------- ft_strcpy -----------------------
-	printf("\n----------------------- ft_strcpy -----------------------\n\n");
 
-
-	printf("Return of strcpy: %s\n", strcpy(dest, "Hello Zorld"));
-	printf("%s\n", dest);
-	printf("Return of ft_strcpy: %s\n", _ft_strcpy(dest, "Hello Zorld"));
-	printf("%s\n", dest);
-
-	// Crashes
-
-	////--
-	//printf("--\n");
-
-	// printf("Return of strcpy: %s\n", strcpy(dest, NULL));
-	// printf("%s\n", dest);
-	// printf("Return of ft_strcpy: %s\n", ft_strcpy(dest, NULL));
-	// printf("%s\n", dest);
-
-	////--
-	//printf("--\n");
-
-	// printf("Return of strcpy: %s\n", strcpy(NULL, "Hello Zorld"));
-	// printf("%s\n", dest);
-	// printf("Return of ft_strcpy: %s\n", ft_strcpy(NULL, "Hello Zorld"));
-	// printf("%s\n", dest);
+	ft_strcpy_tests();
 
 	// ----------------------- ft_strcmp -----------------------
 	printf("\n----------------------- ft_strcmp -----------------------\n\n");
