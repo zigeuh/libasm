@@ -1,8 +1,5 @@
-#include <stdio.h>
-
-int ft_atoi_base(char *arg1, char *arg2);
+#include "libasm_bonus.h"
 
 int main(void) {
-    printf("%d\n", ft_atoi_base("-101010102", "012"));
-    printf("%d\n", ft_atoi_base("ABCDEF", "0123456789ABCDEF"));
+    ft_atoi_base_test();
 }
