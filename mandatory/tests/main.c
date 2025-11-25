@@ -15,33 +15,8 @@ int main() {
 	ft_strlen_tests();
 	ft_strcpy_tests();
 	ft_strcmp_tests();
-
 	ft_write_tests();
-	// ----------------------- ft_write -----------------------0
-	printf("\n----------------------- ft_write -----------------------\n\n");
-
-	printf("write bytes: %ld\n", write(1, "Yes\n", 4));
-	printf("ft_write bytes: %ld\n", _ft_write(1, "Yes\n", 4));
-
-	//--
-	printf("--\n");
-
-	printf("ft_write bytes: %ld\n", _ft_write(1, NULL, 4));
-	printf("Error: %s\n", strerror(errno));
-	errno = 0;
-	// printf("write bytes: %ld\n", write(1, NULL, 4)); // Not compiling with flags
-	// printf("Error: %s\n", strerror(errno));
-	errno = 0;
-
-	//--
-	printf("--\n");
-
-	printf("ft_write bytes: %ld\n", _ft_write(1, "No\n", 5));
-	printf("Error: %s\n", strerror(errno));
-	errno = 0;
-	// printf("write bytes: %ld\n", write(1, "No\n", 5)); // Not compiling with flags
-	// printf("Error: %s\n", strerror(errno));
-	errno = 0;
+	ft_read_tests();
 
 	// ----------------------- ft_read -----------------------
 	printf("\n----------------------- ft_read -----------------------\n\n");

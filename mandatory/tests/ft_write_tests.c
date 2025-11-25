@@ -46,9 +46,9 @@ void ft_write_tests() {
     printf("write: %ld\n", write(1, str, 0));
 
     // custom fd
-    int fd = open("write_tests.txt", O_RDWR |  O_CREAT | O_APPEND, 0664);
+    int fd = open("write_tests", O_RDWR |  O_CREAT | O_APPEND, 0644);
     if (fd < 0) {
-        perror("Error while opening write_tests.txt: ");
+        perror("Error while opening write_tests: ");
 
     } else {
         printf("\n2A. Normal string in fd %d:\n", fd);
