@@ -89,7 +89,7 @@ exec_bonus: $(B_TARGET)
 	./$(B_TARGET)
 
 valgrind: $(M_TARGET)
-	valgrind --leak-check=full --track-origins=yes ./$(M_TARGET)
+	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --track-fds=all ./$(M_TARGET)
 
 v: valgrind
 

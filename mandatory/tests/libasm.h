@@ -20,5 +20,6 @@ void ft_strcpy_tests();
 void ft_strcmp_tests();
 void ft_write_tests();
 void ft_read_tests();
+void ft_strdup_tests();
 
 #endif
