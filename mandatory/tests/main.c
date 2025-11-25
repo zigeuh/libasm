@@ -18,62 +18,6 @@ int main() {
 	ft_write_tests();
 	ft_read_tests();
 
-	// ----------------------- ft_read -----------------------
-	printf("\n----------------------- ft_read -----------------------\n\n");
-
-	int fd = open("Makefile", O_RDONLY);
-	char *bytes_read = malloc(sizeof(char) * 5);
-
-	read(fd, bytes_read, 4);
-	bytes_read[4] = 0;
-	printf("read: %s\n", bytes_read);
-
-	close(fd);
-	fd = open("Makefile", O_RDONLY);
-
-	_ft_read(fd, bytes_read, 4);
-	printf("read: %s\n", bytes_read);
-	close(fd);
-	free(bytes_read);
-
-	//--
-	printf("--\n");
-	
-	fd = open("Makefile", O_RDONLY);
-	bytes_read = malloc(sizeof(char) * 15);	
-	read(fd, bytes_read, 14);
-	bytes_read[14] = 0;
-	printf("read: %s\n", bytes_read);
-
-	close(fd);
-	fd = open("Makefile", O_RDONLY);
-
-	_ft_read(fd, bytes_read, 14);
-	printf("read: %s\n", bytes_read);
-	close(fd);
-	free(bytes_read);
-
-	//--
-	printf("--\n");
-
-	bytes_read = calloc(sizeof(char), 15);	
-	read(-1, bytes_read, 14);
-	printf("Error: %s\n", strerror(errno));
-	errno = 0;
-	bytes_read[14] = 0;
-	printf("read: %s\n", bytes_read);
-	free(bytes_read);
-	
-	char *test = calloc(sizeof(char), 15);
-
-	close(fd);
-	_ft_read(-1, test, 14);
-	printf("Error: %s\n", strerror(errno));
-	errno = 0;	
-	printf("read: %s\n", test);
-	close(fd);
-	free(test);
-
 	// ----------------------- ft_strdup -----------------------
 	printf("\n----------------------- ft_strdup -----------------------\n\n");
 
