@@ -3,24 +3,24 @@
 This project aims to implement several standard C library functions, entirely written in **x86-64 NASM assembly (Intel syntax 🛠️)**. \
 It is designed to teach **low-level programming** 🧠, **calling conventions** 🔁, **memory manipulation** 🧩, and **interaction between C and assembly** ⚙️.
 
-## Mandatory Part
-| Function | Status |
-| -------- | :---: |
+## ✅ Mandatory Part
+| Function  | Status |
+| --------- | :----: |
 | ft_strlen | ✅ |
 | ft_strcpy | ✅ |
 | ft_strcmp | ✅ |
-| ft_write | ✅ |
-| ft_read | ✅ |
+| ft_write  | ✅ |
+| ft_read   | ✅ |
 | ft_strdup | ✅ |
 
 ## ⭐ Bonus Part
-| Function | Status |
-| -------- | :---: |
-| ft_atoi_base | ✅ |
+|      Function      | Status |
+| ------------------ | :----: |
+| ft_atoi_base       | ✅ |
 | ft_list_push_front | ❌ |
-| ft_list_size | ❌ |
-| ft_list_sort | ❌ |
-| ft_list_remove_if | ❌ |
+| ft_list_size       | ❌ |
+| ft_list_sort       | ❌ |
+| ft_list_remove_if  | ❌ |
 
 ## 🛠 Compilation
 
