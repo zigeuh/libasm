@@ -24,7 +24,7 @@ M_TEST_OBJ = $(patsubst $(M_DIR)/tests/%.c,$(M_BUILD_DIR)/%.o,$(M_TEST_SRC))
 B_TEST_OBJ = $(patsubst $(B_DIR)/tests/%.c,$(B_BUILD_DIR)/%.o,$(B_TEST_SRC))
 
 M_HEADER_FLAG = -I$(M_DIR)/tests
-B_HEADER_FLAG = -I$(B_DIR)/tests
+B_HEADER_FLAG = -I$(B_DIR)/tests $(M_HEADER_FLAG)
 
 M_LIBASM = $(M_DIR)/libasm.a
 B_LIBASM = $(B_DIR)/libasm_bonus.a
@@ -77,8 +77,8 @@ $(B_LIBASM): $(B_OBJ_S)
 $(M_TARGET): $(M_LIBASM) $(M_TEST_OBJ)
 	$(CC) $(CFLAGS) $(M_HEADER_FLAG) $(M_TEST_OBJ) $(M_LIBASM) -o $(M_TARGET)
 
-$(B_TARGET): $(B_LIBASM) $(B_TEST_OBJ)
-	$(CC) $(CFLAGS) $(B_HEADER_FLAG) $(B_TEST_OBJ) $(B_LIBASM) -o $(B_TARGET)
+$(B_TARGET): $(B_LIBASM) $(B_TEST_OBJ) $(M_LIBASM)
+	$(CC) $(CFLAGS) $(B_HEADER_FLAG) $(B_TEST_OBJ) $(B_LIBASM) $(M_LIBASM) -o $(B_TARGET)
 
 ##############
 # RULES
@@ -105,7 +105,7 @@ valgrind: $(M_TARGET)
 vm: valgrind
 
 valgrind_bonus: $(B_TARGET)
-	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --track-fds=all ./$(B_TARGET)
+	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --track-fds=all -s ./$(B_TARGET)
 
 vb: valgrind_bonus
 

@@ -5,17 +5,19 @@ section .text
 
 ft_list_push_front:
     push rdi
+    push rsi
 
-	mov rdi, 16
-	call malloc wrt ..plt
+    mov rdi, 16
+    call malloc wrt ..plt
     cmp rax, 0
     jne .ok
 
     mov edi, 12
-	call __errno_location wrt ..plt
-	ret
+    call __errno_location wrt ..plt
+    ret
 
 .ok:
+    pop rsi
     pop rbx
 
     mov [rax], rsi
