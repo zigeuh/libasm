@@ -3,4 +3,3 @@ a.out
 build/
 .vscode/
 *.a
-libasmTester

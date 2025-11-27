@@ -6,6 +6,15 @@ void ft_atoi_base_tests() {
     printf("#                ft_atoi_base                #\n");
     printf("##############################################\n");
 
+    printf("\nTesting whitespaces skip:\n");
+
+    printf("%d\n", ft_atoi_base("    	    1010", "01")); // 10
+    printf("%d\n", ft_atoi_base("   	  	-1010", "01")); // -10
+	printf("%d\n", ft_atoi_base("    	    100 010", "01")); // 4
+    printf("%d\n", ft_atoi_base("   	  	-1010  1515", "01")); // 10
+
+	printf("\nNormal tests:\n");
+
     printf("\n");
 
     printf("Base 2, 1010 in decimal: ");

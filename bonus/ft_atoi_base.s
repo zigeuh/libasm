@@ -55,6 +55,20 @@ ft_atoi_base:
 .check_base_len:
     cmp r11d, 1
     jle .error
+    jmp .skip_whitespaces
+
+.skip_whitespace:
+    inc rdi
+
+.skip_whitespaces:
+    cmp byte [rdi], 32
+    je .skip_whitespace
+
+.check_others_whitespaces:
+    cmp byte [rdi], 13
+    jg .check_minus
+    cmp byte [rdi], 9
+    jge .skip_whitespace
 
 .check_minus:
     cmp byte [rdi], '-'
@@ -76,6 +90,19 @@ ft_atoi_base:
     mov bl, byte [r8]
     cmp bl, 0
     je .loop
+
+    cmp bl, 32
+    je .in_base
+    cmp bl, 9
+    je .in_base
+    cmp bl, 10
+    je .in_base
+    cmp bl, 11
+    je .in_base
+    cmp bl, 12
+    je .in_base
+    cmp bl, 13
+    je .in_base
 
 .respect_base_inner:
     mov r10b, byte [r9]
@@ -137,5 +164,4 @@ ft_atoi_base:
     ret
 
 .error:
-    mov eax, 0
-    ret
+    jmp .check_neg
