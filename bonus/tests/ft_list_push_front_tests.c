@@ -32,7 +32,7 @@ void ft_list_push_front_tests() {
     printf("#             ft_list_push_front             #\n");
     printf("##############################################\n");
 
-    printf("\n");
+    printf("\n1. Already init list:\n");
 
     t_list *list = malloc(sizeof(t_list));
     list->data = "Hello";
@@ -44,6 +44,17 @@ void ft_list_push_front_tests() {
     ft_list_push_front(&list, "FRONT");
     ft_list_push_front(&list, "FrontAgain");
     
+    print_list(&list);
+    free_list(&list);
+
+    printf("\n2. Not init list:\n");
+
+    list = NULL;
+    ft_list_push_front(&list, "OtherTest1");
+    ft_list_push_front(&list, "OtherTest2");
+    ft_list_push_front(&list, "OtherFRONT");
+    ft_list_push_front(&list, "OtherFrontAgain");
+
     print_list(&list);
     free_list(&list);
 
