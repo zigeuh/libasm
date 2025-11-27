@@ -1,13 +1,13 @@
 section .text
-	global _ft_strdup
-	extern _ft_strlen
-    extern _ft_strcpy
+	global ft_strdup
+	extern ft_strlen
+    extern ft_strcpy
     extern malloc
 	extern __errno_location
 
-_ft_strdup:
+ft_strdup:
 	push rdi
-	call _ft_strlen wrt ..plt
+	call ft_strlen wrt ..plt
 	inc rax
 
 	mov rdi, rax
@@ -24,5 +24,5 @@ _ft_strdup:
 .copy:
 	pop rsi
 	mov rdi, rax
-	call _ft_strcpy wrt ..plt
+	call ft_strcpy wrt ..plt
 	ret

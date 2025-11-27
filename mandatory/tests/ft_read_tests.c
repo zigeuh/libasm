@@ -12,7 +12,7 @@ void ft_read_tests() {
     // stdout
     printf("\n1. Read in stdin:\n");
 
-    printf("_ft_read: %ld\n", _ft_read(0, s1, 500));
+    printf("ft_read: %ld\n", ft_read(0, s1, 500));
     printf("s1: %s\n", s1);
     printf("read: %ld\n", read(0, s2, 500));
     printf("s2: %s\n", s2);
@@ -25,7 +25,7 @@ void ft_read_tests() {
     if (fd < 0) {
         perror("Error while opening Makefile: ");
     } else {
-        printf("_ft_read: %ld\n", _ft_read(fd, s1, 10));
+        printf("ft_read: %ld\n", ft_read(fd, s1, 10));
         printf("s1: %s\n", s1);
         lseek(fd, 0, SEEK_SET);
         printf("read: %ld\n", read(fd, s2, 10));
@@ -38,7 +38,7 @@ void ft_read_tests() {
 
     memset(s1, 0, strlen(s1));
     memset(s2, 0, strlen(s2));
-    printf("_ft_read: %ld\n", _ft_read(-1, s1, 50));
+    printf("ft_read: %ld\n", ft_read(-1, s1, 50));
     printf("s1: %s\n", s1);
     printf("read: %ld\n", read(-1, s2, 50));
     printf("s2: %s\n", s2);
