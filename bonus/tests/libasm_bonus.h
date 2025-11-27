@@ -2,6 +2,7 @@
 # define LIBASM_BONUS_H
 
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct s_list
 {
@@ -13,5 +14,6 @@ int ft_atoi_base(char *arg1, char *arg2);
 void ft_list_push_front(t_list **begin_list, void *data);
 
 void ft_atoi_base_tests();
+void ft_list_push_front_tests();
 
 #endif

@@ -1,7 +1,7 @@
 ASM = nasm
 ASM_FLAGS = -felf64
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -g3 -Wall -Werror -Wextra
 AR = ar
 ARFLAGS = rcs
 
@@ -113,7 +113,7 @@ clean:
 	rm -rf $(M_BUILD_DIR) $(B_BUILD_DIR)
 
 fclean: clean
-	rm -f $(M_LIBASM) $(B_LIBASM) $(M_TARGET) $(B_TARGET)
+	rm -f $(M_LIBASM) $(B_LIBASM) $(M_TARGET) $(B_TARGET) write_tests
 
 re: fclean all
 

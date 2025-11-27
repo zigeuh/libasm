@@ -6,6 +6,8 @@ void ft_atoi_base_tests() {
     printf("#                ft_atoi_base                #\n");
     printf("##############################################\n");
 
+    printf("\n");
+
     printf("Base 2, 1010 in decimal: ");
     printf("%d\n", ft_atoi_base("1010", "01")); // 10
     printf("Base 2, -1010 in decimal: ");

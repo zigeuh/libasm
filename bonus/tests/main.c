@@ -2,4 +2,5 @@
 
 int main(void) {
     ft_atoi_base_tests();
+    ft_list_push_front_tests();
 }
