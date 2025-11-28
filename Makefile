@@ -126,12 +126,15 @@ exec: build_exec
 exec_bonus: build_exec_bonus
 	./$(B_TARGET)
 
+exec_all: exec exec_bonus
+
 em: exec
 eb: exec_bonus
-ea: exec exec_bonus
+ea: exec_all
 
 build_exec: $(M_TARGET)
 build_exec_bonus: $(B_TARGET)
+build_exec_all: build_exec build_exec_bonus
 
 bem: build_exec
 beb: build_exec_bonus
@@ -156,4 +159,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all mandatory bonus m b exec exec_bonus em eb ea build_exec build_exec_bonus bem beb bea valgrind valgrind_bonus vm vb clean fclean re
+.PHONY: all mandatory bonus m b exec exec_bonus exec_all em eb ea build_exec build_exec_bonus build_exec_all bem beb bea valgrind valgrind_bonus vm vb clean fclean re
