@@ -17,54 +17,62 @@ It is designed to teach **low-level programming** 🧠, **calling conventions** 
 |      Function      | Status |
 | ------------------ | :----: |
 | ft_atoi_base       | ✅ |
-| ft_list_push_front | ❌ |
-| ft_list_size       | ❌ |
-| ft_list_sort       | ❌ |
+| ft_list_push_front | ✅ |
+| ft_list_size       | ✅ |
+| ft_list_sort       | ✅ |
 | ft_list_remove_if  | ❌ |
 
 ## 🛠 Compilation
 
 ### 📚 Compiling libraries
-To compile both libraries (**libasm.a** and **libasm_bonus.a**), use:
+To compile **libasm.a**, use:
 ```bash
 make
 ```
-or
-```bash
-make all
-```
-
-🔹To compile only one (mandatory or bonus):
-```bash
-make mandatory
-```
-or
+or with bonus:
 ```bash
 make bonus
 ```
 
 ### ⚙️ Compiling executable
-To build the executables:
+<ins>To build the mandatory executable:</ins>
 ```bash
 make build_exec
 ```
-or bonus:
+or shortcut:
+```bash
+make bem
+```
+
+<ins>For the bonus executable:</ins>
 ```bash
 make build_exec_bonus
+```
+or shortcut:
+```bash
+make beb
 ```
 
 ## ▶️ Executing
 There are several commands depending on what you need
 
 ### 🚀 Basic exec
-For mandatory:
+<ins>For mandatory:</ins>
 ```bash
 make exec
 ```
+or shortcut:
+```bash
+make em
+```
 
-For bonus:
+<ins>For bonus:</ins>
 ```base
 make exec_bonus
+```
+or shortcut:
+```bash
+make eb
 ```
 
 ### 🧪 Valgrind exec
@@ -85,3 +93,21 @@ or shortcut:
 ```bash
 make vb
 ```
+
+## List of all Makefile commands
+|      Command      | Description                                                               | Aliases |
+| ----------------- | ------------------------------------------------------------------------- | :-----: |  
+| all               | Compile the mandatory part of the libasm.a                                | -       | 
+| mandatory         | Same as all                                                               | m       |
+| bonus             | Compile the bonus and mandatory part of the libasm.a                      | b       | 
+| exec              | Execute the mandatory part test program                                   | em      |
+| exec_bonus        | Execute the bonus part test program                                       | eb      |
+| exec_all          | Execute the mandatory and bonus part test programs                        | ea      |
+| build_exec        | Build the mandatory part test program                                     | bem     |
+| build_exec_bonus  | Build the bonus part test program                                         | beb     |
+| build_exec_all    | Build the mandatory and bonus part test programs                          | bea     |
+| valgrind          | Execute the mandatory part test program with valgrind                     | vm      |
+| valgrind_bonus    | Execute the bonus part test program with valgrind                         | vb      |
+| clean             | Clean all the .o of the project                                           | -       |
+| fclean            | Run clean command + clean libasm.a, executables and others files created  | -       |
+| valgrind_bonus    | Execute the bonus part test program with valgrind                         | -       |
