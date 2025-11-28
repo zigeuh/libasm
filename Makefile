@@ -1,120 +1,159 @@
-ASM = nasm
-ASM_FLAGS = -felf64
+NAME = libasm.a
+
+BUILD_DIR = build
+MANDATORY_DIR = mandatory
+BONUS_DIR = bonus
+
 CC = gcc
 CFLAGS = -g3 -Wall -Werror -Wextra
+
+NASM = nasm
+NASM_FLAGS = -f elf64
+
 AR = ar
-ARFLAGS = rcs
+AR_FLAGS = rcs
 
-M_DIR = mandatory
-B_DIR = bonus
+VALGRIND_FLAGS = --leak-check=full --track-origins=yes --show-leak-kinds=all --track-fds=all
 
-M_BUILD_DIR = $(M_DIR)/build
-B_BUILD_DIR = $(B_DIR)/build
+M_HEADER_FLAG = -I$(MANDATORY_DIR)/tests
+B_HEADER_FLAG = -I$(BONUS_DIR)/tests $(M_HEADER_FLAG)
 
-M_SRC_S = $(wildcard $(M_DIR)/*.s)
-B_SRC_S = $(wildcard $(B_DIR)/*.s)
+M_TARGET = $(MANDATORY_DIR)/a.out
+B_TARGET = $(BONUS_DIR)/a.out
 
-M_OBJ_S = $(patsubst $(M_DIR)/%.s,$(M_BUILD_DIR)/%.o,$(M_SRC_S))
-B_OBJ_S = $(patsubst $(B_DIR)/%.s,$(B_BUILD_DIR)/%.o,$(B_SRC_S))
-
-M_TEST_SRC = $(wildcard $(M_DIR)/tests/*.c)
-B_TEST_SRC = $(wildcard $(B_DIR)/tests/*.c)
-
-M_TEST_OBJ = $(patsubst $(M_DIR)/tests/%.c,$(M_BUILD_DIR)/%.o,$(M_TEST_SRC))
-B_TEST_OBJ = $(patsubst $(B_DIR)/tests/%.c,$(B_BUILD_DIR)/%.o,$(B_TEST_SRC))
-
-M_HEADER_FLAG = -I$(M_DIR)/tests
-B_HEADER_FLAG = -I$(B_DIR)/tests $(M_HEADER_FLAG)
-
-M_LIBASM = $(M_DIR)/libasm.a
-B_LIBASM = $(B_DIR)/libasm_bonus.a
-
-M_TARGET = $(M_DIR)/a.out
-B_TARGET = $(B_DIR)/a.out
-
-all: mandatory bonus
+M_BUILD_DIR = $(MANDATORY_DIR)/build
+B_BUILD_DIR = $(BONUS_DIR)/build
 
 ##############
-# BUILD DIRS
+# COLORS
 ##############
+
+GREEN = \033[0;32m
+BLUE = \033[0;34m
+CYAN = \033[0;36m
+YELLOW = \033[0;33m
+RED = \033[0;31m
+MAGENTA = \033[0;35m
+RESET = \033[0m
+
+
+##############
+# ASM OBJECTS
+##############
+
+MANDATORY_SRCS = $(shell find $(MANDATORY_DIR) -name "*.s" 2>/dev/null)
+MANDATORY_OBJS = $(patsubst $(MANDATORY_DIR)/%.s,$(BUILD_DIR)/%.o,$(MANDATORY_SRCS))
+
+BONUS_SRCS = $(shell find $(BONUS_DIR) -name "*.s" 2>/dev/null)
+BONUS_OBJS = $(patsubst $(BONUS_DIR)/%.s,$(BUILD_DIR)/%.o,$(BONUS_SRCS))
+
+##############
+# TEST OBJECTS
+##############
+
+M_TEST_SRC = $(shell find $(MANDATORY_DIR) -name "*.c" 2>/dev/null)
+B_TEST_SRC = $(shell find $(BONUS_DIR) -name "*.c" 2>/dev/null)
+
+M_TEST_OBJ = $(patsubst $(MANDATORY_DIR)/tests/%.c,$(M_BUILD_DIR)/%.o,$(M_TEST_SRC))
+B_TEST_OBJ = $(patsubst $(BONUS_DIR)/tests/%.c,$(B_BUILD_DIR)/%.o,$(B_TEST_SRC))
+
+##############
+# BUILD
+##############
+
+$(NAME): $(BUILD_DIR) $(MANDATORY_OBJS)
+	@$(AR) $(AR_FLAGS) $(NAME) $(MANDATORY_OBJS)
+	@echo "$(GREEN)[✓] Library built: $(NAME)$(RESET)"
+
+$(BUILD_DIR):
+	@mkdir -p $(BUILD_DIR)
+
+$(BUILD_DIR)/%.o: $(MANDATORY_DIR)/%.s | $(BUILD_DIR)
+	@$(NASM) $(NASM_FLAGS) -o $@ $<
+	@echo "$(CYAN)[⚙] Compiled: $@$(RESET)"
+
+$(BUILD_DIR)/%.o: $(BONUS_DIR)/%.s | $(BUILD_DIR)
+	@$(NASM) $(NASM_FLAGS) -o $@ $<
+	@echo "$(CYAN)[⚙] Compiled: $@$(RESET)"
 
 $(M_BUILD_DIR):
-	mkdir -p $(M_BUILD_DIR)
+	@mkdir -p $(M_BUILD_DIR)
+
+$(M_BUILD_DIR)/%.o: $(MANDATORY_DIR)/tests/%.c | $(M_BUILD_DIR)
+	@$(CC) $(CFLAGS) $(M_HEADER_FLAG) -c $< -o $@
+	@echo "$(CYAN)[⚙] Compiled: $@$(RESET)"
 
 $(B_BUILD_DIR):
-	mkdir -p $(B_BUILD_DIR)
+	@mkdir -p $(B_BUILD_DIR)
 
-##############
-# OBJECTS
-##############
-
-$(M_BUILD_DIR)/%.o: $(M_DIR)/%.s | $(M_BUILD_DIR)
-	$(ASM) $(ASM_FLAGS) $< -o $@
-
-$(B_BUILD_DIR)/%.o: $(B_DIR)/%.s | $(B_BUILD_DIR)
-	$(ASM) $(ASM_FLAGS) $< -o $@
-
-$(M_BUILD_DIR)/%.o: $(M_DIR)/tests/%.c | $(M_BUILD_DIR)
-	$(CC) $(CFLAGS) $(M_HEADER_FLAG) -c $< -o $@
-
-$(B_BUILD_DIR)/%.o: $(B_DIR)/tests/%.c | $(B_BUILD_DIR)
-	$(CC) $(CFLAGS) $(B_HEADER_FLAG) -c $< -o $@
-
-##############
-# LIBRARIES
-##############
-
-$(M_LIBASM): $(M_OBJ_S)
-	$(AR) $(ARFLAGS) $(M_LIBASM) $(M_OBJ_S)
-
-$(B_LIBASM): $(B_OBJ_S)
-	$(AR) $(ARFLAGS) $(B_LIBASM) $(B_OBJ_S)
+$(B_BUILD_DIR)/%.o: $(BONUS_DIR)/tests/%.c | $(B_BUILD_DIR)
+	@$(CC) $(CFLAGS) $(B_HEADER_FLAG) -c $< -o $@
+	@echo "$(CYAN)[⚙] Compiled: $@$(RESET)"
 
 ##############
 # EXECUTABLES
 ##############
 
-$(M_TARGET): $(M_LIBASM) $(M_TEST_OBJ)
-	$(CC) $(CFLAGS) $(M_HEADER_FLAG) $(M_TEST_OBJ) $(M_LIBASM) -o $(M_TARGET)
+$(M_TARGET): $(NAME) $(M_TEST_OBJ)
+	@$(CC) $(CFLAGS) $(M_HEADER_FLAG) $(M_TEST_OBJ) $(NAME) -o $(M_TARGET)
+	@echo "$(GREEN)[✓] Mandatory executable built: $(M_TARGET)$(RESET)"
 
-$(B_TARGET): $(B_LIBASM) $(B_TEST_OBJ) $(M_LIBASM)
-	$(CC) $(CFLAGS) $(B_HEADER_FLAG) $(B_TEST_OBJ) $(B_LIBASM) $(M_LIBASM) -o $(B_TARGET)
+$(B_TARGET): .bonus $(B_TEST_OBJ)
+	@$(CC) $(CFLAGS) $(B_HEADER_FLAG) $(B_TEST_OBJ) $(NAME) -o $(B_TARGET)
+	@echo "$(GREEN)[✓] Bonus executable built: $(B_TARGET)$(RESET)"
 
 ##############
 # RULES
 ##############
 
-build_exec: $(M_TARGET)
-build_exec_bonus: $(B_TARGET)
+all: $(NAME)
 
-mandatory: $(M_LIBASM)
-bonus: $(B_LIBASM)
+mandatory: all
+
+bonus: .bonus
+
+.bonus: $(MANDATORY_OBJS) $(BONUS_OBJS)
+	@$(AR) $(AR_FLAGS) $(NAME) $(MANDATORY_OBJS) $(BONUS_OBJS)
+	@touch .bonus
+	@echo "$(GREEN)[✓] Library built with bonus: $(NAME)$(RESET)"
 
 m: mandatory
 b: bonus
 
-exec: $(M_TARGET)
+exec: build_exec
 	./$(M_TARGET)
 
-exec_bonus: $(B_TARGET)
+exec_bonus: build_exec_bonus
 	./$(B_TARGET)
 
-valgrind: $(M_TARGET)
-	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --track-fds=all ./$(M_TARGET)
+em: exec
+eb: exec_bonus
+ea: exec exec_bonus
 
-vm: valgrind
+build_exec: $(M_TARGET)
+build_exec_bonus: $(B_TARGET)
+
+bem: build_exec
+beb: build_exec_bonus
+bea: bem beb
+
+valgrind: $(M_TARGET)
+	valgrind $(VALGRIND_FLAGS) ./$(M_TARGET)
 
 valgrind_bonus: $(B_TARGET)
-	valgrind --leak-check=full --track-origins=yes --show-leak-kinds=all --track-fds=all -s ./$(B_TARGET)
+	valgrind $(VALGRIND_FLAGS) ./$(B_TARGET)
 
+vm: valgrind
 vb: valgrind_bonus
 
 clean:
-	rm -rf $(M_BUILD_DIR) $(B_BUILD_DIR)
+	@rm -rf $(BUILD_DIR) $(M_BUILD_DIR) $(B_BUILD_DIR)
+	@echo "$(YELLOW)[🗑] Objects cleaned$(RESET)"
 
 fclean: clean
-	rm -f $(M_LIBASM) $(B_LIBASM) $(M_TARGET) $(B_TARGET) write_tests
+	@rm -f $(NAME) $(M_TARGET) $(B_TARGET) .bonus write_tests
+	@echo "$(RED)[🗑] Full clean done$(RESET)"
 
 re: fclean all
 
-.PHONY: all clean fclean re mandatory bonus exec exec_bonus m b valgrind valgrind_bonus vm vb build_exec
+.PHONY: all mandatory bonus m b exec exec_bonus em eb ea build_exec build_exec_bonus bem beb bea valgrind valgrind_bonus vm vb clean fclean re
