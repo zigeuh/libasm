@@ -1,49 +1,37 @@
 section .text
     global ft_list_remove_if
+    extern free
 
 ft_list_remove_if:
     push rbp
     mov rbp, rsp
-
+    
     push rbx
-    push rdi
-    push rsi
+    push r12
 
-    test rdi, rdi
-    jz .done
-
-    test rsi, rsi
-    jz .done
-
-    test rdx, rdx
-    jz .done
-
-    test rcx, rcx
-    jz .done
-
-    mov r8, rsi
-    mov rbx, [rdi]          ; rbx = current
-
-.loop:
+    xor rbx, rbx
+    mov rbx, [rdi]
     test rbx, rbx
     jz .done
 
-    push rbx
+    xor r12, r12
+    mov r12, rcx
+    test r12, r12
+    jz .done
 
-    sub rsp, 8
+.loop:
     mov rdi, [rbx]
-    call rcx
-    add rsp, 8
+    call r12
 
-    pop rbx
-
-.no_free:
+    mov rdi, rbx
     mov rbx, [rbx + 8]
-    jmp .loop
+    call free wrt ..plt
+    
+    test rbx, rbx
+    jnz .loop
 
 .done:
-    pop rsi
-    pop rdi
+    pop r12
     pop rbx
-    pop rbp
+    leave
     ret
