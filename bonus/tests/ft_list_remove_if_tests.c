@@ -25,8 +25,8 @@ void ft_list_remove_if_tests() {
     t_list *list = NULL;
     ft_list_remove_if(&list, "1", ft_strcmp, free_fct);
 
-    ft_list_push_front(&list, ft_strdup("1"));
     ft_list_push_front(&list, ft_strdup("OtherFront"));
+    ft_list_push_front(&list, ft_strdup("1"));
     ft_list_push_front(&list, ft_strdup("OtherFront2"));
     ft_list_push_front(&list, ft_strdup("Hello"));
     
@@ -38,5 +38,6 @@ void ft_list_remove_if_tests() {
     printf("next next next next: %p\n", list->next->next->next->next);
     ft_list_remove_if(&list, "1", ft_strcmp, free_fct);
 
+    print_list(&list);
     printf("\n");
 }
