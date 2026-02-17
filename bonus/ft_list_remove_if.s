@@ -2,98 +2,123 @@ section .text
     global ft_list_remove_if
     extern free
 
+%define REG_CURR rbx
+%define REG_FREE r12
+%define REG_CMP r13
+%define REG_REF r14
+%define REG_PREV r15
+
+; ---------------------------
+; void ft_list_remove_if(t_list **begin_list, void *data_ref, int (*cmp)(), void (*free_fct)(void *));
+; ---------------------------
 ft_list_remove_if:
     push rbp
     mov rbp, rsp
     
-    push rbx
-    push r12
-    push r13
-    push r14
-    push r15
-    sub rsp, 8
+    ; Saves used registers
+    push REG_CURR
+    push REG_FREE
+    push REG_CMP
+    push REG_REF
+    push REG_PREV
+    sub rsp, 8                              ; Aligns the stack on 16 bytes
 
-    xor rbx, rbx
-    mov rbx, [rdi]
-    test rbx, rbx
-    jz .done
+    ; Gathers *begin_list
+    xor REG_CURR, REG_CURR
+    mov REG_CURR, [rdi]
+    test REG_CURR, REG_CURR
+    jz .done                                ; Leaves if the list is empty
 
-    xor r14, r14
-    mov r14, rsi
-    test r14, r14
-    jz .done
+    ; Gathers the data_ref
+    xor REG_REF, REG_REF
+    mov REG_REF, rsi
+    test REG_REF, REG_REF
+    jz .done                                ; Leaves if no data_ref is given
 
-    xor r13, r13
-    mov r13, rdx
-    test r13, r13
-    jz .done
+    ; Gathers int (*cmp)()
+    xor REG_CMP, REG_CMP
+    mov REG_CMP, rdx
+    test REG_CMP, REG_CMP
+    jz .done                                ; Leaves if no cmp function is given
 
-    xor r12, r12
-    mov r12, rcx
-    test r12, r12
-    jz .done
+    ; Gathers void (*free_fct)(void *)
+    xor REG_FREE, REG_FREE
+    mov REG_FREE, rcx
+    test REG_FREE, REG_FREE
+    jz .done                                ; Leaves if no free function is given
 
 .first:
-    xor r15, r15
-    mov r15, rdi
+    xor REG_PREV, REG_PREV
+    mov REG_PREV, rdi                       ; Store temporaly *begin_list in case we need to delete the first node
 
-    push rbx
-    mov rdi, [rbx]
-    mov rsi, r14
-    call r13
-    pop rbx
+    ; cmp(node->data, data_ref)
+    push REG_CURR
+    mov rdi, [REG_CURR]
+    mov rsi, REG_REF
+    call REG_CMP
+    pop REG_CURR
 
     test rax, rax
     jnz .loop
 
-    mov rdi, r15
-    mov r15, [rbx + 8]
-    mov [rdi], r15
+    ; Changes the head node                        Need fix if multiples bad nodes in a row
+    mov rdi, REG_PREV
+    mov REG_PREV, [REG_CURR + 8]
+    mov [rdi], REG_PREV
 
-    mov rdi, [rbx]
-    call r12
+    ; Call free_fct on node->data
+    mov rdi, [REG_CURR]
+    call REG_FREE
 
-    mov rdi, rbx
-    mov rbx, [rbx + 8]
-    mov r15, rbx
+    ; free(node)
+    mov rdi, REG_CURR
+    mov REG_CURR, [REG_CURR + 8]
+    mov REG_PREV, REG_CURR
     call free wrt ..plt
-    
     jmp .loop_end
 
-
+; ---------------------------
+; Parse the given linked list
+; ---------------------------
 .loop:
-    push rbx
-    mov rdi, [rbx]
-    mov rsi, r14
-    call r13
-    pop rbx
+    ; Verify is the current node needs to be removed
+    push REG_CURR
+    mov rdi, [REG_CURR]
+    mov rsi, REG_REF
+    call REG_CMP
+    pop REG_CURR 
 
     test rax, rax
-    jz .free
-    mov r15, rbx
-    mov rbx, [rbx + 8]
+    jz .free                                ; If cmp returns 0, it needs to be removed
+    mov REG_PREV, REG_CURR                  ; Else, keep this node as the previous one
+    mov REG_CURR, [REG_CURR + 8]            ; and go onto the next one
 
 .loop_end:
-    test rbx, rbx
+    test REG_CURR, REG_CURR
     jz .done
     jmp .loop
 
+; ---------------------------
+; Removing the current node
+; ---------------------------
 .free:
-    mov rdi, [rbx]
-    call r12
+    ; Call free_fct on node->data
+    mov rdi, [REG_CURR]
+    call REG_FREE
 
-    mov rdi, rbx
-    mov rbx, [rbx + 8]
-    mov [r15 + 8], rbx
+    ; free(node)
+    mov rdi, REG_CURR
+    mov REG_CURR, [REG_CURR + 8]            ; Goes onto the next node
+    mov [REG_PREV + 8], REG_CURR            ; and changes the previous node->next to the new current one
     call free wrt ..plt
     
     jmp .loop_end
 
 .done:
-    pop r15
-    pop r14
-    pop r13
-    pop r12
-    pop rbx
+    pop REG_PREV
+    pop REG_REF
+    pop REG_CMP
+    pop REG_FREE
+    pop REG_CURR
     leave
     ret
