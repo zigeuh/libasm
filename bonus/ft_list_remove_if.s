@@ -48,34 +48,32 @@ ft_list_remove_if:
     jz .done                                ; Leaves if no free function is given
 
 .first:
-    xor REG_PREV, REG_PREV
-    mov REG_PREV, rdi                       ; Store temporaly *begin_list in case we need to delete the first node
-
     ; cmp(node->data, data_ref)
-    push REG_CURR
+    push rdi
     mov rdi, [REG_CURR]
     mov rsi, REG_REF
     call REG_CMP
-    pop REG_CURR
+    pop rdi
 
-    test rax, rax
-    jnz .loop
+    test rax, rax                           ; Test if the first element of the list is equal to ref
+    jnz .loop                               ; and if not, no need to use specific behavior
 
-    ; Changes the head node                        Need fix if multiples bad nodes in a row
-    mov rdi, REG_PREV
-    mov REG_PREV, [REG_CURR + 8]
-    mov [rdi], REG_PREV
+    ; Changes the head node
+    mov r10, [REG_CURR + 8]
+    mov [rdi], r10
 
-    ; Call free_fct on node->data
+    ; Call free_fct on node->data and free(node)
+    push rdi
     mov rdi, [REG_CURR]
     call REG_FREE
 
-    ; free(node)
     mov rdi, REG_CURR
-    mov REG_CURR, [REG_CURR + 8]
-    mov REG_PREV, REG_CURR
     call free wrt ..plt
-    jmp .loop_end
+    pop rdi
+
+    mov REG_CURR, [rdi]                 ; Update current with node at head
+    
+    jmp .first
 
 ; ---------------------------
 ; Parse the given linked list

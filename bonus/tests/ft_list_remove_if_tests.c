@@ -10,10 +10,7 @@ static void print_list(t_list **begin) {
 }
 
 static void free_fct(void *data) {
-    printf("Entering free_fct\n");
-    printf("Data text: %s\n", (char*)data);
     free(data);
-    printf("Free'd\n");
 }
 
 static void free_list(t_list **begin) {
@@ -50,6 +47,7 @@ void ft_list_remove_if_tests() {
     ft_list_push_front(&list, ft_strdup("OtherFront"));
     ft_list_push_front(&list, ft_strdup("OtherFront2"));
     ft_list_push_front(&list, ft_strdup("Hello"));
+    ft_list_push_front(&list, ft_strdup("Hello"));        
     
     print_list(&list);
 
