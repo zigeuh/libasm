@@ -1,17 +1,17 @@
 section .text
 	global ft_strcpy
 
+; ---------------------------
+; char *ft_strcpy(char *dest, const char *src);
+; ---------------------------
 ft_strcpy:
-	push rdi
-	mov rcx, rdi
+	mov rax, rdi
+
 .loop:
-	mov al, byte [rsi]
-	mov byte [rcx], al
-	inc rcx
-	inc rsi
-	test al, al
-	jnz .loop
-	pop rax
-	ret
-.error:
+	mov dl, byte [rsi]				; Get current src char
+	mov byte [rdi], dl				; Write in dest the char
+	inc rdi							; Increment dest ptr
+	inc rsi							; Increment src ptr
+	test dl, dl						; Test if current src char is \0
+	jnz .loop						; If not continue copying
 	ret
