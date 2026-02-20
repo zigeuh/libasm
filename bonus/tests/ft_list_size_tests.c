@@ -21,7 +21,7 @@ static void free_list(t_list **begin) {
 void ft_list_size_tests() {
 
     printf("##############################################\n");
-    printf("#             ft_list_push_front             #\n");
+    printf("#                ft_list_size                #\n");
     printf("##############################################\n");
 
     printf("\n1. Normal list:\n");

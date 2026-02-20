@@ -1,69 +1,76 @@
 section .text
     global ft_list_sort
 
+%define REG_CURR rbx
+%define REG_CMP r12
+%define REG_NEXT r13
+%define REG_SWAPPED r14
+%define REG_HEAD r15
+
+; ---------------------------
+; void ft_list_sort(t_list **begin_list, int (*cmp)());
+; ---------------------------
+
 ft_list_sort:
-    push rbp
-    mov rbp, rsp
 
-    push rdi
-    push rsi
+    ; Saves used registers
+    push rbx
+    push r12
+    push r13
+    push r14
+    push r15
 
-    test rdi, rdi
+    mov REG_HEAD, rdi
+    test REG_HEAD, REG_HEAD
     jz .done
 
-    mov rdx, [rdi]          ; rdx = current
-
-    test rdx, rdx
+    mov REG_CURR, [rdi]
+    test REG_CURR, REG_CURR
     jz .done
 
-    test rsi, rsi
+    mov REG_CMP, rsi
+    test REG_CMP, REG_CMP
     jz .done
 
-    mov r8, rsi
-    mov eax, 1
+    mov REG_SWAPPED, 1
 
+; Main loop
 .outer_loop:
-    test eax, eax
+    test REG_SWAPPED, REG_SWAPPED
     jz .done
 
-    mov rcx, [rdx + 8]      ; rdx = current->next
-    mov eax, 0
+    xor REG_SWAPPED, REG_SWAPPED
+    mov REG_CURR, [REG_HEAD]
 
+; Inner loop where current->data is compared with next->data
 .inner_loop:
-    test rcx, rcx
-    jz .end_inner_loop
+    mov REG_NEXT, [REG_CURR + 8]
+    test REG_NEXT, REG_NEXT
+    jz .outer_loop
 
-    mov rdi, [rdx]
-    mov rsi, [rcx]
-    push rdx
-    push rcx
-    push r8
-    sub rsp, 8
-    call r8
-    add rsp, 8
-    pop r8
-    pop rcx
-    pop rdx
+    mov rdi, [REG_CURR]
+    mov rsi, [REG_NEXT]
+    call REG_CMP
+    cmp eax, 0
+    jg .swap
+    jmp .end_inner_loop
 
-    test eax, eax
-    jz .not_swap
-
-    mov r9, [rdx]           ; tmp = current->data
-    mov r10, [rcx]          ; tmp2 = current->next->data
-    mov [rdx], r10          ; current->data = tmp2
-    mov [rcx], r9           ; current->next->data = tmp
-    mov eax, 1
-
-.not_swap:
-    mov rcx, [rcx + 8]      ; current->next = current->next->next
-    jmp .inner_loop
+; Swap 2 datas
+.swap:
+    mov r10, [REG_CURR]
+    mov r11, [REG_NEXT]
+    mov [REG_CURR], r11
+    mov [REG_NEXT], r10
+    mov REG_SWAPPED, 1
 
 .end_inner_loop:
-    mov rdx, [rdx + 8]      ; current = current->next
-    jmp .outer_loop
+    mov REG_CURR, REG_NEXT
+    jmp .inner_loop
 
 .done:
-    pop rsi
-    pop rdi
-    pop rbp
+    pop r15
+    pop r14
+    pop r13
+    pop r12
+    pop rbx
     ret

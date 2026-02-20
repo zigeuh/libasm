@@ -62,7 +62,7 @@ void ft_list_sort_tests() {
     print_list(&list1);
 
     printf("After:\n");
-     ft_list_sort(&list1, ft_strcmp);
+    ft_list_sort(&list1, ft_strcmp);
     print_list(&list1);
 
     free_list(&list1);
@@ -75,7 +75,7 @@ void ft_list_sort_tests() {
     print_list(&list1);
 
     printf("After:\n");
-     ft_list_sort(&list1, ft_strcmp);
+    ft_list_sort(&list1, ft_strcmp);
     print_list(&list1);
 
     printf("\n3. NULL arg:\n");
@@ -113,7 +113,7 @@ void ft_list_sort_tests() {
     print_list(&list1);
 
     printf("After:\n");
-     ft_list_sort(&list1, ft_strcmp);
+    ft_list_sort(&list1, ft_strcmp);
     print_list(&list1);
 
     free_list(&list1);
