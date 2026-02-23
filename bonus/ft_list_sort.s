@@ -22,38 +22,38 @@ ft_list_sort:
 
     mov REG_HEAD, rdi
     test REG_HEAD, REG_HEAD
-    jz .done
+    jz .done                            ; Leave if list empty
 
     mov REG_CURR, [rdi]
     test REG_CURR, REG_CURR
-    jz .done
+    jz .done                            ; Leave if list empty
 
     mov REG_CMP, rsi
     test REG_CMP, REG_CMP
-    jz .done
+    jz .done                            ; Leave if no cmp function
 
-    mov REG_SWAPPED, 1
+    mov REG_SWAPPED, 1                  ; Helpful to know if while parsing the list, we swapped
 
 ; Main loop
 .outer_loop:
     test REG_SWAPPED, REG_SWAPPED
-    jz .done
+    jz .done                            ; If we didn't, list is sorted
 
     xor REG_SWAPPED, REG_SWAPPED
     mov REG_CURR, [REG_HEAD]
 
 ; Inner loop where current->data is compared with next->data
 .inner_loop:
-    mov REG_NEXT, [REG_CURR + 8]
+    mov REG_NEXT, [REG_CURR + 8]        ; Get current->next
     test REG_NEXT, REG_NEXT
-    jz .outer_loop
+    jz .outer_loop                      ; If NULL, then we finished parsing the list
 
-    mov rdi, [REG_CURR]
-    mov rsi, [REG_NEXT]
-    call REG_CMP
-    cmp eax, 0
-    jg .swap
-    jmp .end_inner_loop
+    mov rdi, [REG_CURR]                 ; current->data
+    mov rsi, [REG_NEXT]                 ; next->data
+    call REG_CMP                        ; Call the cmp function
+    cmp eax, 0                          ; Comparing with 0
+    jg .swap                            ; If > 0, we swap numbers
+    jmp .end_inner_loop                 ; If not, we continue parsing
 
 ; Swap 2 datas
 .swap:
@@ -64,8 +64,8 @@ ft_list_sort:
     mov REG_SWAPPED, 1
 
 .end_inner_loop:
-    mov REG_CURR, REG_NEXT
-    jmp .inner_loop
+    mov REG_CURR, REG_NEXT              ; curr = curr->next
+    jmp .inner_loop                     ; Continue parsing
 
 .done:
     pop r15

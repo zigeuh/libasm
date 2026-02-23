@@ -47,7 +47,7 @@ void ft_list_push_front_tests() {
     print_list(&list);
     free_list(&list);
 
-    printf("\n2. Not init list:\n");
+    printf("\n2. Not allocated list:\n");
 
     list = NULL;
     ft_list_push_front(&list, "OtherTest1");
