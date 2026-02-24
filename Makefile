@@ -5,7 +5,7 @@ MANDATORY_DIR = mandatory
 BONUS_DIR = bonus
 
 CC = gcc
-CFLAGS = -g3 -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra
 
 NASM = nasm
 NASM_FLAGS = -f elf64
