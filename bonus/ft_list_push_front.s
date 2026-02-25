@@ -12,19 +12,15 @@ ft_list_push_front:
 
     mov rdi, 16
     call malloc wrt ..plt               ; Allocate a t_list node (16 bytes = 8 bytes *void + 8 bytes *t_list)
-    cmp rax, 0                          ; Check if allocation failed
-    jne .ok
 
-    ; Set errno and return
-    mov edi, 12
-    call __errno_location wrt ..plt
-    mov [rax], edi                      ; Set errno value to 12
-    pop rdi
+    pop rsi                             ; Recover saved rsi
+    pop rdi                             ; Recover saved rdi
+
+    test rax, rax                       ; Check if allocation failed
+    jnz .ok
     ret
 
-.ok:
-    pop rsi
-    pop rdi                             ; Recover saved rdi
+.ok:                       
     
     mov [rax], rsi                      ; Set *data value to *data value of the new node
     mov rdx, [rdi]                      ; Set *begin_list to rdx
