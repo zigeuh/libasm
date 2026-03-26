@@ -21,7 +21,7 @@ ft_strdup:
 	jz .done							; If so, exit the code
 
 	; If not we copy the content of s to the new buffer
-	mov rdi, rax						; Give the new buffer address as dest
+	mov rdi, rax						; Give the new buffer address as dest	
 	mov rsi, rbx						; Get s address as src
 	call ft_strcpy wrt ..plt			; Copy from s to new buffer
 
